@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>날짜 계산기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            background: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>날짜 계산기</h1>
+
+    <label>첫 번째 출고일</label>
+    <input type="date" id="firstDate">
+
+    <label>두 번째 출고일</label>
+    <input type="date" id="secondDate">
+
+    <button onclick="calculate()">계산하기</button>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function calculate() {
+            const firstDate = new Date(document.getElementById('firstDate').value);
+            const secondDate = new Date(document.getElementById('secondDate').value);
+
+            if (isNaN(firstDate) || isNaN(secondDate)) {
+                alert("날짜를 모두 선택하세요!");
+                return;
+            }
+
+            // 사이 기간 (일수)
+            let diffDays = (secondDate - firstDate) / (1000 * 60 * 60 * 24);
+
+            // 중간일 계산 (0.5일 이상이면 올림 처리)
+            let middleDays = diffDays / 2;
+            if (middleDays % 1 >= 0.5) {
+                middleDays = Math.ceil(middleDays);
+            } else {
+                middleDays = Math.floor(middleDays);
+            }
+
+            let middleDate = new Date(firstDate);
+            middleDate.setDate(middleDate.getDate() + middleDays);
+
+            // 앞의 달만 1 더하기 (연도 자동 반영)
+            let finalDate = new Date(middleDate);
+            finalDate.setMonth(finalDate.getMonth() + 1);
+
+            document.getElementById('result').innerHTML = `
+                사이 기간: ${diffDays.toFixed(1)}일<br>
+                중간일: ${middleDays}일<br>
+                첫 번째 출고 + 중간일 = ${middleDate.getMonth() + 1}월 ${middleDate.getDate()}일<br>
+                최종 결과 (+1달) = ${finalDate.getMonth() + 1}월 ${finalDate.getDate()}일
+            `;
+        }
+    </script>
+</body>
+</html>
