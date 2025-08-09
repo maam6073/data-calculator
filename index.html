@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>날짜 계산기</title>
+    <title>강혜빈 날짜 계산기</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,12 +42,12 @@
 </head>
 <body>
 
-    <h2>📅 날짜 계산기</h2>
+    <h2>📅 강혜빈 날짜 계산기</h2>
 
-    <label>첫 번째 날짜</label>
+    <label>처음 출고일</label>
     <input type="date" id="startDate">
 
-    <label>두 번째 날짜</label>
+    <label>마지막 출고일</label>
     <input type="date" id="endDate">
 
     <button onclick="calculate()">계산하기</button>
@@ -82,7 +82,7 @@
                 사이 기간: ${diffDays}일<br>
                 중간일: ${midDaysRounded}일<br>
                 첫 번째 날짜 + 중간일: ${midDate.getMonth()+1}월 ${midDate.getDate()}일<br>
-                중간일 + 30일: ${plus30.getMonth()+1}월 ${plus30.getDate()}일
+                최종결과(중간일 + 30일): ${plus30.getMonth()+1}월 ${plus30.getDate()}일
             `;
         }
     </script>
