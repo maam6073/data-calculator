@@ -7,55 +7,48 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
-            max-width: 400px;
+            max-width: 500px;
             margin: auto;
+            padding: 20px;
             background: #f9f9f9;
         }
-        h1 {
+        h2 {
             text-align: center;
         }
         label {
-            font-weight: bold;
             display: block;
-            margin-top: 15px;
+            margin-top: 10px;
+            font-weight: bold;
         }
-        input {
+        input, button {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-top: 5px;
             font-size: 16px;
         }
         button {
-            margin-top: 20px;
-            width: 100%;
-            padding: 10px;
-            background: #4CAF50;
+            background-color: #4CAF50;
             color: white;
-            font-size: 16px;
             border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #45a049;
         }
         .result {
-            margin-top: 20px;
+            margin-top: 15px;
             padding: 10px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
     </style>
 </head>
 <body>
-    <h1>날짜 계산기</h1>
 
-    <label>첫 번째 출고일</label>
-    <input type="date" id="firstDate">
+    <h2>📅 날짜 계산기</h2>
 
-    <label>두 번째 출고일</label>
-    <input type="date" id="secondDate">
+    <label>첫 번째 날짜</label>
+    <input type="date" id="startDate">
+
+    <label>두 번째 날짜</label>
+    <input type="date" id="endDate">
 
     <button onclick="calculate()">계산하기</button>
 
@@ -63,39 +56,36 @@
 
     <script>
         function calculate() {
-            const firstDate = new Date(document.getElementById('firstDate').value);
-            const secondDate = new Date(document.getElementById('secondDate').value);
+            let start = new Date(document.getElementById("startDate").value);
+            let end = new Date(document.getElementById("endDate").value);
 
-            if (isNaN(firstDate) || isNaN(secondDate)) {
-                alert("날짜를 모두 선택하세요!");
+            if (!start.getTime() || !end.getTime()) {
+                document.getElementById("result").innerHTML = "⚠️ 날짜를 모두 선택하세요.";
                 return;
             }
 
-            // 사이 기간 (일수)
-            let diffDays = (secondDate - firstDate) / (1000 * 60 * 60 * 24);
+            // 날짜 차이 계산
+            let diffDays = Math.abs((end - start) / (1000 * 60 * 60 * 24));
 
-            // 중간일 계산 (0.5일 이상이면 올림 처리)
-            let middleDays = diffDays / 2;
-            if (middleDays % 1 >= 0.5) {
-                middleDays = Math.ceil(middleDays);
-            } else {
-                middleDays = Math.floor(middleDays);
-            }
+            // 중간일 계산
+            let midDays = diffDays / 2;
+            let midDaysRounded = Math.ceil(midDays); // 0.5일이면 올림 처리
 
-            let middleDate = new Date(firstDate);
-            middleDate.setDate(middleDate.getDate() + middleDays);
+            let midDate = new Date(start);
+            midDate.setDate(midDate.getDate() + midDaysRounded);
 
-            // 앞의 달만 1 더하기 (연도 자동 반영)
-            let finalDate = new Date(middleDate);
-            finalDate.setMonth(finalDate.getMonth() + 1);
+            // 30일 더한 날짜 계산
+            let plus30 = new Date(midDate);
+            plus30.setDate(plus30.getDate() + 30);
 
-            document.getElementById('result').innerHTML = `
-                사이 기간: ${diffDays.toFixed(1)}일<br>
-                중간일: ${middleDays}일<br>
-                첫 번째 출고 + 중간일 = ${middleDate.getMonth() + 1}월 ${middleDate.getDate()}일<br>
-                최종 결과 (+1달) = ${finalDate.getMonth() + 1}월 ${finalDate.getDate()}일
+            document.getElementById("result").innerHTML = `
+                사이 기간: ${diffDays}일<br>
+                중간일: ${midDaysRounded}일<br>
+                첫 번째 날짜 + 중간일: ${midDate.getMonth()+1}월 ${midDate.getDate()}일<br>
+                중간일 + 30일: ${plus30.getMonth()+1}월 ${plus30.getDate()}일
             `;
         }
     </script>
+
 </body>
 </html>
